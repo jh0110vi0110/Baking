@@ -15,11 +15,9 @@ public final class RecipeRetrofit {
 
         Gson gson = new GsonBuilder().create();
 
-        //OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         recipeFetch = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                //.callFactory(httpClientBuilder.build())
                 .build().create(RecipeFetch.class);
         return recipeFetch;
     }
