@@ -1,10 +1,8 @@
 package com.vi.baking.ui;
 
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,57 +24,48 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements RecipeListAdapter.OnRecipeListener {
     public static final String TAG = "RecipeListFragment";
-
-    //private ArrayList<Recipe> mRecipeList;
-
+    private ArrayList<Recipe> mRecipeList;
 
     public RecipeListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // RecyclerView recipeListRecyclerView;
        final View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
-        //initialize recyclerview
         RecyclerView recipeListRecyclerView = (RecyclerView)  rootView.findViewById(R.id.rv_recipe_list);
         recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 350));
-        //final RecipeListAdapter recipeListAdapter =new RecipeListAdapter((MainActivity)getActivity());
-        //recipeListRecyclerView.setAdapter(recipeListAdapter);
+        final RecipeListAdapter recipeListAdapter =new RecipeListAdapter(mRecipeList, this);
+        recipeListRecyclerView.setAdapter(recipeListAdapter);
 
         RecipeFetch recipeFetch = RecipeRetrofit.make();
         Call<ArrayList<Recipe>> recipeCall = recipeFetch.fetchRecipes();
 
+        //Asynchronus call
         recipeCall.enqueue(new Callback<ArrayList<Recipe>>() {
 
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
-                Integer statusCode = response.code();
-                Log.d(TAG, "onResponse: status code: "+ statusCode.toString());
-
                 ArrayList<Recipe> recipes = response.body();
+                mRecipeList = recipes;
                 for (int i = 0; i < recipes.size(); i++){
                     Log.d(TAG, "onResponse: " + recipes.get(i).getName());
                     Log.d(TAG, "onResponse: " + recipes.get(i).getSteps().get(i).getDescription());
 
                 }
 
-                //recipeListAdapter.setRecipeList(recipes);
-
+                recipeListAdapter.setRecipeList(recipes);
 
                 //Bundle recipesBundle = new Bundle();
-               // recipesBundle.putParcelableArrayList(ALL_RECIPES, recipes);
+                // recipesBundle.putParcelableArrayList(ALL_RECIPES, recipes);
 
-
-
-               // recipesAdapter.setRecipeData(recipes,getContext());
-               // if (idlingResource != null) {
-               //     idlingResource.setIdleState(true);
-               // }
+                // if (idlingResource != null) {
+                //     idlingResource.setIdleState(true);
+                // }
 
 
             }
@@ -86,12 +75,14 @@ public class RecipeListFragment extends Fragment {
                 Log.d(TAG, "onFailure http fail: " + t.getMessage());
             }
         });
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
-               //inflater.inflate(R.layout.fragment_recipe_list, container, false)
-
-       // return rootView;
+        return rootView;
     }
 
+    @Override
+    public void onRecipeClick(int position) {
+        Recipe recipeToSend = mRecipeList.get(position);
+        Intent intentToStartDetailActivity = new Intent(getContext(), RecipeDetailActivity.class);
+        intentToStartDetailActivity.putExtra("Recipe", recipeToSend);
+        startActivity(intentToStartDetailActivity);
+    }
 }

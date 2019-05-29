@@ -6,23 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
     tools:context=".ui.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recipe_list_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-<!--
     <fragment
         android:id="@+id/fragment_recipe_list"
         android:name="com.vi.baking.ui.RecipeListFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
--->
-
-
-
-
 
 </LinearLayout>
