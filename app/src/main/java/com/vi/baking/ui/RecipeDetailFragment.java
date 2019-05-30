@@ -1,6 +1,7 @@
 package com.vi.baking.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -22,9 +23,11 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeDetailFragment extends Fragment implements StepListAdapter.OnStepListener{
+public class RecipeDetailFragment extends Fragment {
     public static final String TAG = "RecipeDetailFragment";
     Recipe mRecipe;
+
+    //public interface
 
     public RecipeDetailFragment() {
         // Required empty public constructor
@@ -66,7 +69,7 @@ public class RecipeDetailFragment extends Fragment implements StepListAdapter.On
                     //mIngredientsTextView.append("\t\t Measure: " + ingredients.get(i).getMeasure() + "\n");
                 }
             }
-            StepListAdapter stepListAdapter = new StepListAdapter(stepList, this );
+            StepListAdapter stepListAdapter = new StepListAdapter(stepList, (RecipeDetailActivity)getActivity() );
             mStepsRecyclerView.setAdapter(stepListAdapter);
             //stepListAdapter.setStepList(stepList);
 
@@ -86,8 +89,5 @@ public class RecipeDetailFragment extends Fragment implements StepListAdapter.On
         outState.putParcelable("Recipe", mRecipe);
     }
 
-    @Override
-    public void onStepClick(int position) {
 
-    }
 }

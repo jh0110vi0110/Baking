@@ -17,12 +17,9 @@ public class Ingredient implements Parcelable {
     @SerializedName("ingredient")
     @Expose
     private String ingredient;
+
     public final static Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
+        @SuppressWarnings({"unchecked"})
         public Ingredient createFromParcel(Parcel in) {
             return new Ingredient(in);
         }
@@ -30,14 +27,12 @@ public class Ingredient implements Parcelable {
         public Ingredient[] newArray(int size) {
             return (new Ingredient[size]);
         }
-
-    }
-            ;
+    };
 
     protected Ingredient(Parcel in) {
-        this.quantity = ((double) in.readValue((double.class.getClassLoader())));
-        this.measure = ((String) in.readValue((String.class.getClassLoader())));
-        this.ingredient = ((String) in.readValue((String.class.getClassLoader())));
+        this.quantity = in.readDouble();
+        this.measure = in.readString();
+        this.ingredient = in.readString();
     }
 
     public Ingredient() {
@@ -68,9 +63,9 @@ public class Ingredient implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(quantity);
-        dest.writeValue(measure);
-        dest.writeValue(ingredient);
+        dest.writeDouble(quantity);
+        dest.writeString(measure);
+        dest.writeString(ingredient);
     }
 
     public int describeContents() {
