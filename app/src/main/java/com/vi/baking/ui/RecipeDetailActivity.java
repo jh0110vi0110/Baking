@@ -21,9 +21,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+        Intent intentThatStartedThisActivity = getIntent();
 
         if (savedInstanceState == null){
-            Intent intentThatStartedThisActivity = getIntent();
             if (intentThatStartedThisActivity != null) {
                 if (intentThatStartedThisActivity.hasExtra("Recipe")) {
                     mRecipe = intentThatStartedThisActivity.getParcelableExtra("Recipe");
@@ -43,10 +43,18 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 }
             }
 
-
-
-
+        } else {
+            mRecipe = savedInstanceState.getParcelable("Recipe");
+            setTitle(savedInstanceState.getString("Title"));
         }
+       // getSupportActionBar().setHomeButtonEnabled(true);
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("Title", mRecipe.getName());
+        outState.putParcelable("Recipe", mRecipe);
     }
 }
