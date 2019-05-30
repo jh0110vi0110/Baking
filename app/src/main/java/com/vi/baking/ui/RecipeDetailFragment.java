@@ -15,13 +15,14 @@ import com.vi.baking.R;
 import com.vi.baking.adapter.StepListAdapter;
 import com.vi.baking.model.Ingredient;
 import com.vi.baking.model.Recipe;
+import com.vi.baking.model.Step;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements StepListAdapter.OnStepListener{
     public static final String TAG = "RecipeDetailFragment";
     Recipe mRecipe;
 
@@ -35,20 +36,21 @@ public class RecipeDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
         if(savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable("Recipe");
-
         }
 
         TextView mServingsTextView = rootView.findViewById(R.id.tv_recipe_detail_fragment_servings);
         TextView mIngredientsTextView = rootView.findViewById(R.id.tv_recipe_detail_fragment_ingredients);
-
         RecyclerView mStepsRecyclerView = rootView.findViewById(R.id.rv_steps_list);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mStepsRecyclerView.setLayoutManager(linearLayoutManager);
-        //StepListAdapter stepListAdapter = new StepListAdapter();
-        //mStepsRecyclerView.setAdapter(stepListAdapter);
+
+
 
         if (mRecipe != null){
             int servings = mRecipe.getServings();
+            ArrayList<Step> stepList = mRecipe.getSteps();
+
             mServingsTextView.setText(getString(R.string.servings) + ": " + servings);
             mIngredientsTextView.append("\n");
             ArrayList<Ingredient> ingredients = mRecipe.getIngredients();
@@ -64,6 +66,9 @@ public class RecipeDetailFragment extends Fragment {
                     //mIngredientsTextView.append("\t\t Measure: " + ingredients.get(i).getMeasure() + "\n");
                 }
             }
+            StepListAdapter stepListAdapter = new StepListAdapter(stepList, this );
+            mStepsRecyclerView.setAdapter(stepListAdapter);
+            //stepListAdapter.setStepList(stepList);
 
         }
 
@@ -81,4 +86,8 @@ public class RecipeDetailFragment extends Fragment {
         outState.putParcelable("Recipe", mRecipe);
     }
 
+    @Override
+    public void onStepClick(int position) {
+
+    }
 }
