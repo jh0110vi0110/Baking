@@ -45,20 +45,19 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
         RecipeFetch recipeFetch = RecipeRetrofit.make();
         Call<ArrayList<Recipe>> recipeCall = recipeFetch.fetchRecipes();
 
-        //Asynchronus call
+        //Asynchronous call
         recipeCall.enqueue(new Callback<ArrayList<Recipe>>() {
 
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
                 ArrayList<Recipe> recipes = response.body();
                 mRecipeList = recipes;
-                for (int i = 0; i < recipes.size(); i++){
-                    Log.d(TAG, "onResponse: " + recipes.get(i).getName());
-                    Log.d(TAG, "onResponse: " + recipes.get(i).getSteps().get(i).getDescription());
-
-                }
-
                 recipeListAdapter.setRecipeList(recipes);
+               // for (int i = 0; i < recipes.size(); i++){
+               //     Log.d(TAG, "onResponse: " + recipes.get(i).getName());
+               //     Log.d(TAG, "onResponse: " + recipes.get(i).getSteps().get(i).getDescription());
+               // }
+
 
                 //Bundle recipesBundle = new Bundle();
                 // recipesBundle.putParcelableArrayList(ALL_RECIPES, recipes);
