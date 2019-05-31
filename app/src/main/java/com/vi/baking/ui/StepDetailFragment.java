@@ -41,7 +41,7 @@ public class StepDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Log.d(TAG, "onCreateView: Launched for step: " + mStep.getShortDescription());
+
         Log.d(TAG, "onCreateView: Launched for step: " + mStepList.get(mcurrentStepId).getShortDescription());
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_step_detail, container, false);

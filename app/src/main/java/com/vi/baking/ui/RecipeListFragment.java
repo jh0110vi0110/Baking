@@ -38,7 +38,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
        final View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         RecyclerView recipeListRecyclerView = (RecyclerView)  rootView.findViewById(R.id.rv_recipe_list);
-        recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 350));
+        recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 500));
         final RecipeListAdapter recipeListAdapter =new RecipeListAdapter(mRecipeList, this);
         recipeListRecyclerView.setAdapter(recipeListAdapter);
 
