@@ -1,7 +1,6 @@
 package com.vi.baking.ui;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -69,7 +68,7 @@ public class RecipeDetailFragment extends Fragment {
                     //mIngredientsTextView.append("\t\t Measure: " + ingredients.get(i).getMeasure() + "\n");
                 }
             }
-            StepListAdapter stepListAdapter = new StepListAdapter(stepList, (RecipeDetailActivity)getActivity() );
+            StepListAdapter stepListAdapter = new StepListAdapter(stepList, (DetailActivity)getActivity() );
             mStepsRecyclerView.setAdapter(stepListAdapter);
             //stepListAdapter.setStepList(stepList);
 

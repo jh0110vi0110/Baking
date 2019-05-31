@@ -14,15 +14,15 @@ import com.vi.baking.model.Step;
 import java.util.ArrayList;
 
 
-public class RecipeDetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener {
-    private static final String TAG = "RecipeDetailActivity";
+public class DetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener {
+    private static final String TAG = "DetailActivity";
     private Recipe mRecipe;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_detail);
+        setContentView(R.layout.activity_detail);
         Intent intentThatStartedThisActivity = getIntent();
 
         if (savedInstanceState == null){
@@ -89,7 +89,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListA
 
         /*
         Recipe recipeToSend = mRecipeList.get(position);
-        Intent intentToStartDetailActivity = new Intent(getContext(), RecipeDetailActivity.class);
+        Intent intentToStartDetailActivity = new Intent(getContext(), DetailActivity.class);
         intentToStartDetailActivity.putExtra("Recipe", recipeToSend);
         startActivity(intentToStartDetailActivity);
          */

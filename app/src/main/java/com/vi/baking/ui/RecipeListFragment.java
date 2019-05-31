@@ -80,7 +80,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
     @Override
     public void onRecipeClick(int position) {
         Recipe recipeToSend = mRecipeList.get(position);
-        Intent intentToStartDetailActivity = new Intent(getContext(), RecipeDetailActivity.class);
+        Intent intentToStartDetailActivity = new Intent(getContext(), DetailActivity.class);
         intentToStartDetailActivity.putExtra("Recipe", recipeToSend);
         startActivity(intentToStartDetailActivity);
     }

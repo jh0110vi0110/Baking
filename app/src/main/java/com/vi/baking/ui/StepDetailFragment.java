@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.vi.baking.R;
 import com.vi.baking.model.Step;
@@ -41,10 +42,17 @@ public class StepDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
+
+        TextView shortDescriptionTextView = rootView.findViewById(R.id.tv_step_detail_fragment_short_description);
 
         Log.d(TAG, "onCreateView: Launched for step: " + mStepList.get(mcurrentStepId).getShortDescription());
+        shortDescriptionTextView.setText(mStepList.get(mcurrentStepId).getShortDescription());
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_step_detail, container, false);
+        return rootView;
     }
 
 }
