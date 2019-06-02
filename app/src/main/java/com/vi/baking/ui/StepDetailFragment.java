@@ -45,6 +45,7 @@ public class StepDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
         TextView shortDescriptionTextView = rootView.findViewById(R.id.tv_step_detail_fragment_short_description);
+        TextView descriptionTextView = rootView.findViewById(R.id.tv_step_detail_fragment_description);
 
         Log.d(TAG, "onCreateView: Launched for step: " + mStepList.get(mcurrentStepId).getShortDescription());
         shortDescriptionTextView.setText(mStepList.get(mcurrentStepId).getShortDescription());

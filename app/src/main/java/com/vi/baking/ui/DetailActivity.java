@@ -16,7 +16,9 @@ import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener {
     private static final String TAG = "DetailActivity";
-    private Recipe mRecipe;
+    //private Recipe mRecipe;
+    private ArrayList<Recipe> mRecipeList;
+    private int mRecipeIndex;
 
 
     @Override
@@ -24,47 +26,63 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Intent intentThatStartedThisActivity = getIntent();
+        Bundle b = intentThatStartedThisActivity.getExtras();
 
         if (savedInstanceState == null){
-            if (intentThatStartedThisActivity != null) {
-                if (intentThatStartedThisActivity.hasExtra("Recipe")) {
-                    mRecipe = intentThatStartedThisActivity.getParcelableExtra("Recipe");
-                    setTitle(mRecipe.getName());
-                    RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-                    recipeDetailFragment.setRecipe(mRecipe);
+            if(b != null){
 
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .add(R.id.fl_recipe_detail_container, recipeDetailFragment)
-                            //.addToBackStack("RecipeDetailFragment")
-                            .commit();
+            //if (intentThatStartedThisActivity != null) {
+                //if (intentThatStartedThisActivity.hasExtra("RecipeList") &&
+                   //     intentThatStartedThisActivity.hasExtra("RecipePosition")) {
+                        //intentThatStartedThisActivity.hasExtra("RecipeId")) {
+                    //mRecipe = intentThatStartedThisActivity.getParcelableExtra("Recipe");
 
 
-                    Log.d(TAG, "onCreate: " + mRecipe.getName());
-                    Log.d(TAG, "onCreate: " + mRecipe.getIngredients().get(3).getIngredient());
-                    Log.d(TAG, "onCreate: " + mRecipe.getSteps().get(4).getDescription());
+                    //mRecipeList = intentThatStartedThisActivity.getParcelableExtra("RecipeList");
+                    mRecipeList = b.getParcelableArrayList("RecipeList");
+                    //mRecipeIndex = intentThatStartedThisActivity.getIntExtra("RecipePosition", 0);
+                    mRecipeIndex = b.getInt("RecipeId");
+                    //mId = intentThatStartedThisActivity.getIntExtra("RecipeId", 0);
+                    //setTitle(mRecipe.getName());
+                    setTitle(mRecipeList.get(mRecipeIndex).getName());
+
+                    displayRecipeAtPosition(mRecipeIndex);
+
+
+
+
+                    //Log.d(TAG, "onCreate: " + mRecipe.getName());
+                    //Log.d(TAG, "onCreate: " + mRecipe.getIngredients().get(3).getIngredient());
+                    //Log.d(TAG, "onCreate: " + mRecipe.getSteps().get(4).getDescription());
                 }
-            }
+
 
         } else {
-            mRecipe = savedInstanceState.getParcelable("Recipe");
+            mRecipeList = savedInstanceState.getParcelableArrayList("RecipeList");
+            mRecipeIndex = savedInstanceState.getInt("RecipePosition");
             setTitle(savedInstanceState.getString("Title"));
+
+            //mRecipe = savedInstanceState.getParcelable("Recipe");
+            //setTitle(savedInstanceState.getString("Title"));
         }
-       // getSupportActionBar().setHomeButtonEnabled(true);
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("Title", mRecipe.getName());
-        outState.putParcelable("Recipe", mRecipe);
+        outState.putParcelableArrayList("RecipeList", mRecipeList);
+        outState.putInt("RecipePosition", mRecipeIndex);
+        outState.putString("Title", mRecipeList.get(mRecipeIndex).getName());
+        //outState.putString("Title", mRecipe.getName());
+        //outState.putParcelable("Recipe", mRecipe);
     }
 
     @Override
     public void onStepClick(int position) {
         //Step stepToSend = mRecipe.getSteps().get(position);
-        ArrayList<Step> stepListToSend = mRecipe.getSteps();
+        //ArrayList<Step> stepListToSend = mRecipe.getSteps();
+        ArrayList<Step> stepListToSend = mRecipeList.get(mRecipeIndex).getSteps();
         int stepIdToSend = stepListToSend.get(position).getId();
 
         StepDetailFragment stepDetailFragment = new StepDetailFragment();
@@ -73,7 +91,7 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         //stepDetailFragment.setStep(stepToSend);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fl_recipe_detail_container, stepDetailFragment)
+                .replace(R.id.fl_detail_container, stepDetailFragment)
                 .addToBackStack("StepDetailFragment")
                 .commit();
 
@@ -93,5 +111,16 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         intentToStartDetailActivity.putExtra("Recipe", recipeToSend);
         startActivity(intentToStartDetailActivity);
          */
+    }
+
+    private void displayRecipeAtPosition ( int position ){
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        recipeDetailFragment.setRecipe(mRecipeList.get(position));
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.fl_detail_container, recipeDetailFragment)
+                //.addToBackStack("DetailFragment")
+                .commit();
     }
 }
