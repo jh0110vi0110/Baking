@@ -5,6 +5,8 @@
     <string name="quantity" translatable="true">Quantity</string>
     <string name="steps" translatable="true">Steps</string>
     <string name="widget_menu_item" translatable="true">Send to widget</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
 
