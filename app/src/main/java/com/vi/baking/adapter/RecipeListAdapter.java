@@ -42,12 +42,16 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int pos) {
         String recipeName = mRecipeList.get(pos).getName();
         recipeViewHolder.recipeListTextView.setText(recipeName);
-        String imageUrl=mRecipeList.get(pos).getImage();
-        //Picasso.get()
-         //       .load(imageUrl)
-         //       .placeholder(R.drawable.ic_launcher_background)
-         //       .error(R.drawable.ic_launcher_foreground)
-        //        .into(recipeViewHolder.recipeListImageView);
+        String imageUrl = mRecipeList.get(pos).getImage();
+        if (imageUrl.isEmpty()){
+            recipeViewHolder.recipeListImageView.setVisibility(View.GONE);
+        }else{
+            Picasso.get()
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(recipeViewHolder.recipeListImageView);
+        }
     }
 
     @Override
@@ -61,13 +65,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnRecipeListener onRecipeListener;
         TextView recipeListTextView;
-        //ImageView recipeListImageView;
+        ImageView recipeListImageView;
 
         public RecipeViewHolder(@NonNull View itemView, OnRecipeListener onRecipeListener) {
             super(itemView);
             this.onRecipeListener = onRecipeListener;
             recipeListTextView = (TextView) itemView.findViewById(R.id.tv_recipe_list_name);
-            //recipeListImageView = (ImageView) itemView.findViewById(R.id.iv_recipe_list_icon);
+            recipeListImageView = (ImageView) itemView.findViewById(R.id.iv_recipe_list_icon);
             itemView.setOnClickListener(this);
         }
 

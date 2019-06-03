@@ -20,43 +20,29 @@
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
             android:padding="2dp">
-
             <Button
                 android:id="@+id/btn_step_detail_fragment_previous"
                 android:background="@drawable/ic_left_arrow_outline"
-                android:layout_width="24dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:backgroundTintMode="src_over"
-                android:padding="2dp" />
-
+                android:layout_gravity="start|center_vertical" />
             <TextView
                 android:id="@+id/tv_step_detail_fragment_short_description"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight=".3"
-                android:text="Remove from oven and cool at room tempurature blah blah blah"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textColor="@color/colorPrimaryDark"/>
-
             <Button
                 android:id="@+id/btn_step_detail_fragment_next"
                 android:background="@drawable/ic_right_arrow_outline"
-                android:padding="2dp"
-                android:layout_margin="4dp"
-                android:layout_width="24dp"
-                android:layout_gravity="end|center_vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTintMode="src_over"
-                />
+                android:layout_gravity="end|center_vertical" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
-
     <android.support.v7.widget.CardView
         android:id="@+id/cv_step_detail_fragment_player_border"
         xmlns:cardview="http://schemas.android.com/apk/res-auto"
@@ -65,7 +51,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp">
-
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/sepv_step_detail_fragment_player"
             android:layout_width="match_parent"
@@ -82,13 +67,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp">
-        <ImageView
-            android:id="@+id/iv_step_detail_fragment_thumbnail"
-            android:layout_gravity="left"
-            android:paddingRight="15dp"
-            android:elevation="1dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_step_detail_fragment_description"
@@ -96,17 +74,14 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="TEST STEP DETAIL"/>
-
-
+            android:textColor="@color/colorPrimaryDark" />
     </android.support.v7.widget.CardView>
-
-
-
-
-
-
-
+    <ImageView
+        android:id="@+id/iv_step_detail_fragment_thumbnail"
+        android:layout_gravity="start"
+        android:paddingRight="15dp"
+        android:elevation="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

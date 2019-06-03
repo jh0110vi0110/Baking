@@ -1,6 +1,7 @@
 package com.vi.baking.ui;
 
 
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -27,6 +29,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.vi.baking.R;
 import com.vi.baking.model.Step;
 
@@ -56,9 +59,6 @@ public class StepDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    //public void setStep (Step step){
-    //    this.mStep = step;
-    //}
     public void setStepList (ArrayList<Step> stepList){
         this.mStepList = stepList;
     }
@@ -89,23 +89,35 @@ public class StepDetailFragment extends Fragment {
 
         }
 
+        //Find all the views
         TextView shortDescriptionTextView = rootView.findViewById(R.id.tv_step_detail_fragment_short_description);
         mPreviousButton = rootView.findViewById(R.id.btn_step_detail_fragment_previous);
         mNextButton = rootView.findViewById(R.id.btn_step_detail_fragment_next);
         TextView descriptionTextView = rootView.findViewById(R.id.tv_step_detail_fragment_description);
         CardView exoPlayerContainer = rootView.findViewById(R.id.cv_step_detail_fragment_player_border);
+        ImageView thumbnailImageView = rootView.findViewById(R.id.iv_step_detail_fragment_thumbnail);
         mSimpleExoPlayerView = rootView.findViewById(R.id.sepv_step_detail_fragment_player);
         mSimpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-        //If there is a Video to play
+        //If there is no Video to play
         if( mStepList.get(mCurrentStepId).getVideoURL().equals("")){
             exoPlayerContainer.setVisibility(View.GONE);
             //mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
         }else {
             initializePlayer(Uri.parse(mStepList.get(mCurrentStepId).getVideoURL()));
-
         }
 
+        //If there is no Thumbnail to show
+        if (mStepList.get(mCurrentStepId).getThumbnailURL().equals("")){
+            thumbnailImageView.setVisibility(View.GONE);
+        }else{
+            Picasso.get()
+                   .load(mStepList.get(mCurrentStepId).getThumbnailURL())
+                   .placeholder(R.drawable.ic_launcher_background)
+                   .error(R.drawable.ic_launcher_foreground)
+                    .into(thumbnailImageView);
+
+        }
 
         //Previous Button Functionality
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +125,10 @@ public class StepDetailFragment extends Fragment {
             public void onClick(View v) {
                 mPreviousButton.setBackgroundResource(R.drawable.ic_left_arrow);
                 if ( mCurrentStepId != 0) {
+                    stopPlayer();
                     mOnStepListener.onStepClick(mCurrentStepId - 1);
                 }else{
+                    stopPlayer();
                     mOnStepListener.onStepClick(mStepList.size() -1 );
                 }
             }
@@ -125,20 +139,18 @@ public class StepDetailFragment extends Fragment {
             public void onClick(View v) {
                 mNextButton.setBackgroundResource(R.drawable.ic_right_arrow);
                 if ( mCurrentStepId != mStepList.size() -1 ){
+                    stopPlayer();
                     mOnStepListener.onStepClick(mCurrentStepId + 1);
                 }else {
+                    stopPlayer();
                     mOnStepListener.onStepClick(0);
                 }
 
             }
         });
 
-
-        //Log.d(TAG, "onCreateView: Launched for step: " + mStepList.get(mCurrentStepId).getShortDescription());
         shortDescriptionTextView.setText(mStepList.get(mCurrentStepId).getShortDescription());
         descriptionTextView.setText(mStepList.get(mCurrentStepId).getDescription());
-
-
 
         // Inflate the layout for this fragment
         return rootView;
@@ -151,6 +163,12 @@ public class StepDetailFragment extends Fragment {
         outState.putInt("CurrentStep", mCurrentStepId);
         outState.putString("Title", mRecipeName);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        releasePlayer();
     }
 
     //adapted from ClassicalMoviesQuiz excercise
@@ -171,6 +189,22 @@ public class StepDetailFragment extends Fragment {
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mPlayer.prepare(mediaSource);
             mPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    private void stopPlayer(){
+        if( mPlayer!=null ){
+            mPlayer.stop();
+        }
+    }
+
+    //from classical movie quiz excercise
+    private void releasePlayer() {
+        //mNotificationManager.cancelAll();
+        if (mPlayer != null){
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
         }
     }
 
