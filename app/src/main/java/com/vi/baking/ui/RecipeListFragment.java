@@ -34,18 +34,17 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       // RecyclerView recipeListRecyclerView;
        final View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
+       //Initialize Recyclerview
         RecyclerView recipeListRecyclerView = (RecyclerView)  rootView.findViewById(R.id.rv_recipe_list);
         recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 300));
         final RecipeListAdapter recipeListAdapter =new RecipeListAdapter(mRecipeList, this);
         recipeListRecyclerView.setAdapter(recipeListAdapter);
 
+        //Asynchronous call (onResponse onFail)
         RecipeFetch recipeFetch = RecipeRetrofit.make();
         Call<ArrayList<Recipe>> recipeCall = recipeFetch.fetchRecipes();
-
-        //Asynchronous call
         recipeCall.enqueue(new Callback<ArrayList<Recipe>>() {
 
             @Override
@@ -57,7 +56,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
 
             @Override
             public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
-                Log.d(TAG, "onFailure http fail: " + t.getMessage());
+                Log.d(TAG, "Retrofit onFailure http failure: " + t.getMessage());
             }
         });
         return rootView;

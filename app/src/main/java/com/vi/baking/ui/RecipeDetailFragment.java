@@ -44,8 +44,6 @@ public class RecipeDetailFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mStepsRecyclerView.setLayoutManager(linearLayoutManager);
 
-
-
         if (mRecipe != null){
             int servings = mRecipe.getServings();
             ArrayList<Step> stepList = mRecipe.getSteps();
@@ -76,6 +74,5 @@ public class RecipeDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putParcelable("Recipe", mRecipe);
     }
-
 
 }

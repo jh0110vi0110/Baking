@@ -1,7 +1,6 @@
 package com.vi.baking.ui;
 
 
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,8 +38,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class StepDetailFragment extends Fragment {
-    private static final String TAG = "StepDetailFragment";
-    //private Step mStep;
+    //private static final String TAG = "StepDetailFragment";
     private String mRecipeName = "";
     private ArrayList<Step> mStepList;
     private int mCurrentStepId;
@@ -53,7 +51,6 @@ public class StepDetailFragment extends Fragment {
     public interface OnStepListener{
         void onStepClick(int position);
     }
-
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -86,6 +83,8 @@ public class StepDetailFragment extends Fragment {
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
+            //click to restore current step on state change
+            mOnStepListener.onStepClick(mCurrentStepId);
         }
 
         //Find all the views
@@ -101,8 +100,6 @@ public class StepDetailFragment extends Fragment {
         //If there is no Video to play
         if( mStepList.get(mCurrentStepId).getVideoURL().equals("")){
             exoPlayerContainer.setVisibility(View.GONE);
-            //releasePlayer();
-            //mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
         }else {
             initializePlayer(Uri.parse(mStepList.get(mCurrentStepId).getVideoURL()));
         }
@@ -112,14 +109,14 @@ public class StepDetailFragment extends Fragment {
             thumbnailImageView.setVisibility(View.GONE);
         }else{
             Picasso.get()
-                   .load(mStepList.get(mCurrentStepId).getThumbnailURL())
-                   .placeholder(R.drawable.ic_launcher_background)
-                   .error(R.drawable.ic_launcher_foreground)
+                    .load(mStepList.get(mCurrentStepId).getThumbnailURL())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
                     .into(thumbnailImageView);
 
         }
 
-        //Previous Button Functionality
+        //Previous Button Click Behavior (Loop to end at first step)
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +131,7 @@ public class StepDetailFragment extends Fragment {
             }
         });
 
+        //Next Button Click Behavior (Loop back to beginning from final step)
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +160,6 @@ public class StepDetailFragment extends Fragment {
         outState.putParcelableArrayList("StepList", mStepList);
         outState.putInt("CurrentStep", mCurrentStepId);
         outState.putString("Title", mRecipeName);
-
     }
 
     @Override
@@ -171,7 +168,7 @@ public class StepDetailFragment extends Fragment {
         releasePlayer();
     }
 
-    //adapted from ClassicalMoviesQuiz excercise
+    // from ClassicalMoviesQuiz lesson
     private void initializePlayer(Uri mediaUri) {
         if (mPlayer == null) {
             // Create an instance of the ExoPlayer.
@@ -198,7 +195,6 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
-    //from classical movie quiz excercise
     private void releasePlayer() {
         //mNotificationManager.cancelAll();
         if (mPlayer != null){
@@ -207,24 +203,5 @@ public class StepDetailFragment extends Fragment {
             mPlayer = null;
         }
     }
-
-
-    /*
-    private void initializePlayer(Uri mediaUri) {
-        if (player == null) {
-            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
-            DefaultTrackSelector trackSelector = new DefaultTrackSelector(mainHandler, videoTrackSelectionFactory);
-            LoadControl loadControl = new DefaultLoadControl();
-
-            player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
-            simpleExoPlayerView.setPlayer(player);
-
-            String userAgent = Util.getUserAgent(getContext(), "Baking App");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            player.prepare(mediaSource);
-            player.setPlayWhenReady(true);
-        }
-    }
-    */
 
 }

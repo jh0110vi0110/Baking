@@ -27,6 +27,9 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         setContentView(R.layout.activity_detail);
         Intent intentThatStartedThisActivity = getIntent();
         Bundle b = intentThatStartedThisActivity.getExtras();
+        if ( findViewById(R.id.fl_detail_container_right) != null){
+            mTwoPane = true;
+        }
 
         if (savedInstanceState == null){
             if(b != null){
@@ -34,15 +37,14 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
                 mRecipeIndex = b.getInt("RecipeId");
                 setTitle(mRecipeList.get(mRecipeIndex).getName());
                 displayRecipeAtPosition(mRecipeIndex);
+                displayStepAtPosition(0);
+
             }
         } else {
             mRecipeList = savedInstanceState.getParcelableArrayList("RecipeList");
             mRecipeIndex = savedInstanceState.getInt("RecipePosition");
             setTitle(savedInstanceState.getString("Title"));
-        }
-        if ( findViewById(R.id.fl_detail_container_right) != null){
-            mTwoPane = true;
-            displayStepAtPosition(0);
+
         }
 
     }
@@ -78,7 +80,7 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         stepDetailFragment.setRecipeName(mRecipeList.get(mRecipeIndex).getName());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if( mTwoPane){
+        if( mTwoPane ){
             fragmentManager.beginTransaction()
                     .replace(R.id.fl_detail_container_right, stepDetailFragment)
                     .commit();
