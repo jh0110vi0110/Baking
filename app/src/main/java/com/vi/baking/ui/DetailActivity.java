@@ -15,8 +15,7 @@ import java.util.ArrayList;
 
 
 public class DetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener, StepDetailFragment.OnStepListener {
-    private static final String TAG = "DetailActivity";
-    //private Recipe mRecipe;
+    //private static final String TAG = "DetailActivity";
     private ArrayList<Recipe> mRecipeList;
     private int mRecipeIndex;
     private boolean mTwoPane;
@@ -44,8 +43,6 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         if ( findViewById(R.id.fl_detail_container_right) != null){
             mTwoPane = true;
             displayStepAtPosition(0);
-
-
         }
 
     }
@@ -56,8 +53,6 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         outState.putParcelableArrayList("RecipeList", mRecipeList);
         outState.putInt("RecipePosition", mRecipeIndex);
         outState.putString("Title", mRecipeList.get(mRecipeIndex).getName());
-        //outState.putString("Title", mRecipe.getName());
-        //outState.putParcelable("Recipe", mRecipe);
     }
 
     @Override
@@ -72,25 +67,25 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.fl_detail_container, recipeDetailFragment)
-                //.addToBackStack("DetailFragment")
                 .commit();
     }
 
     private void displayStepAtPosition (int position){
         ArrayList<Step> stepListToSend = mRecipeList.get(mRecipeIndex).getSteps();
-        int stepIdToSend = stepListToSend.get(position).getId();
         StepDetailFragment stepDetailFragment = new StepDetailFragment();
         stepDetailFragment.setStepList(stepListToSend);
         stepDetailFragment.setCurrentStepId(position);
         stepDetailFragment.setRecipeName(mRecipeList.get(mRecipeIndex).getName());
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction();
         if( mTwoPane){
-            fragmentManager.beginTransaction().replace(R.id.fl_detail_container_right, stepDetailFragment).commit();
-
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fl_detail_container_right, stepDetailFragment)
+                    .commit();
         }else{
-            fragmentManager.beginTransaction().replace(R.id.fl_detail_container, stepDetailFragment).commit();
-
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fl_detail_container, stepDetailFragment)
+                    .commit();
         }
 
     }

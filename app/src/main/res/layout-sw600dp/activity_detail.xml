@@ -11,11 +11,12 @@
     <FrameLayout
         android:id="@+id/fl_detail_container"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"/>
     <View
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:layout_margin="2dp"
+        android:layout_margin="5dp"
         android:background="@color/colorPrimary" />
     <FrameLayout
         android:id="@+id/fl_detail_container_right"
