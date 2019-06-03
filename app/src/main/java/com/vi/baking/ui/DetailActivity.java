@@ -14,7 +14,7 @@ import com.vi.baking.model.Step;
 import java.util.ArrayList;
 
 
-public class DetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener {
+public class DetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener, StepDetailFragment.OnStepListener {
     private static final String TAG = "DetailActivity";
     //private Recipe mRecipe;
     private ArrayList<Recipe> mRecipeList;
@@ -87,7 +87,9 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
 
         StepDetailFragment stepDetailFragment = new StepDetailFragment();
         stepDetailFragment.setStepList(stepListToSend);
-        stepDetailFragment.setCurrentStepId(stepIdToSend);
+        //stepDetailFragment.setCurrentStepId(stepIdToSend);
+        stepDetailFragment.setCurrentStepId(position);
+        stepDetailFragment.setRecipeName(mRecipeList.get(mRecipeIndex).getName());
         //stepDetailFragment.setStep(stepToSend);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
