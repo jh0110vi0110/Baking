@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.vi.baking.R;
 import com.vi.baking.adapter.StepListAdapter;
@@ -62,7 +64,23 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
        displayStepAtPosition(position);
     }
 
-    private void displayRecipeAtPosition ( int position ){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemClicked = item.getItemId();
+        if (itemClicked == R.id.i_menu_main_add_widget){
+            //Add Recipe to widget
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void displayRecipeAtPosition (int position ){
         RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         recipeDetailFragment.setRecipe(mRecipeList.get(position));
 
