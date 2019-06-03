@@ -1,6 +1,7 @@
 package com.vi.baking.ui;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,9 +14,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.vi.baking.R;
 import com.vi.baking.model.Step;
 
@@ -86,26 +97,38 @@ public class StepDetailFragment extends Fragment {
         mSimpleExoPlayerView = rootView.findViewById(R.id.sepv_step_detail_fragment_player);
         mSimpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
+        //If there is a Video to play
         if( mStepList.get(mCurrentStepId).getVideoURL().equals("")){
             exoPlayerContainer.setVisibility(View.GONE);
             //mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
+        }else {
+            initializePlayer(Uri.parse(mStepList.get(mCurrentStepId).getVideoURL()));
 
         }
 
+
+        //Previous Button Functionality
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: current step is " + mCurrentStepId);
-                mOnStepListener.onStepClick(mCurrentStepId - 1);
+                mPreviousButton.setBackgroundResource(R.drawable.ic_left_arrow);
+                if ( mCurrentStepId != 0) {
+                    mOnStepListener.onStepClick(mCurrentStepId - 1);
+                }else{
+                    mOnStepListener.onStepClick(mStepList.size() -1 );
+                }
             }
         });
 
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mCurrentStepId++;
-
-                mOnStepListener.onStepClick(mCurrentStepId + 1);
+                mNextButton.setBackgroundResource(R.drawable.ic_right_arrow);
+                if ( mCurrentStepId != mStepList.size() -1 ){
+                    mOnStepListener.onStepClick(mCurrentStepId + 1);
+                }else {
+                    mOnStepListener.onStepClick(0);
+                }
 
             }
         });
@@ -129,6 +152,28 @@ public class StepDetailFragment extends Fragment {
         outState.putString("Title", mRecipeName);
 
     }
+
+    //adapted from ClassicalMoviesQuiz excercise
+    private void initializePlayer(Uri mediaUri) {
+        if (mPlayer == null) {
+            // Create an instance of the ExoPlayer.
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            mPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+            mSimpleExoPlayerView.setPlayer(mPlayer);
+
+            // Set the ExoPlayer.EventListener to this activity.
+            //mPlayer.addListener(this);
+
+            // Prepare the MediaSource.
+            String userAgent = Util.getUserAgent(getContext(), "Baking Time");
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+            mPlayer.prepare(mediaSource);
+            mPlayer.setPlayWhenReady(true);
+        }
+    }
+
 
     /*
     private void initializePlayer(Uri mediaUri) {
