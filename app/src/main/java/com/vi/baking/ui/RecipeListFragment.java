@@ -38,7 +38,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
        final View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         RecyclerView recipeListRecyclerView = (RecyclerView)  rootView.findViewById(R.id.rv_recipe_list);
-        recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 500));
+        recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 300));
         final RecipeListAdapter recipeListAdapter =new RecipeListAdapter(mRecipeList, this);
         recipeListRecyclerView.setAdapter(recipeListAdapter);
 
@@ -53,20 +53,6 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
                 ArrayList<Recipe> recipes = response.body();
                 mRecipeList = recipes;
                 recipeListAdapter.setRecipeList(recipes);
-               // for (int i = 0; i < recipes.size(); i++){
-               //     Log.d(TAG, "onResponse: " + recipes.get(i).getName());
-               //     Log.d(TAG, "onResponse: " + recipes.get(i).getSteps().get(i).getDescription());
-               // }
-
-
-                //Bundle recipesBundle = new Bundle();
-                // recipesBundle.putParcelableArrayList(ALL_RECIPES, recipes);
-
-                // if (idlingResource != null) {
-                //     idlingResource.setIdleState(true);
-                // }
-
-
             }
 
             @Override
@@ -79,20 +65,12 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
 
     @Override
     public void onRecipeClick(int position) {
-        //Recipe recipeToSend = mRecipeList.get(position);
         ArrayList<Recipe> recipeListToSend = mRecipeList;
-        //int clickedRecipeId = mRecipeList.get(position).getId();
-        //int clickedRecipePosition = position;
         Intent intentToStartDetailActivity = new Intent(getContext(), DetailActivity.class);
-        //intentToStartDetailActivity.putExtra("Recipe", recipeToSend);
         Bundle b = new Bundle();
         b.putParcelableArrayList("RecipeList", recipeListToSend);
         b.putInt("RecipeId", position);
         intentToStartDetailActivity.putExtras(b);
-        //intentToStartDetailActivity.putParcelableArrayListExtra("RecipeList", recipeListToSend);
-        //intentToStartDetailActivity.putExtra("RecipePosition", 2);
-        //intentToStartDetailActivity.putExtra("RecipeId", clickedRecipeId);
-        //intentToStartDetailActivity.putExtra("RecipePosition", position);
         startActivity(intentToStartDetailActivity);
     }
 }

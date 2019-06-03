@@ -86,7 +86,6 @@ public class StepDetailFragment extends Fragment {
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
-
         }
 
         //Find all the views
@@ -102,6 +101,7 @@ public class StepDetailFragment extends Fragment {
         //If there is no Video to play
         if( mStepList.get(mCurrentStepId).getVideoURL().equals("")){
             exoPlayerContainer.setVisibility(View.GONE);
+            //releasePlayer();
             //mSimpleExoPlayerView.setVisibility(View.INVISIBLE);
         }else {
             initializePlayer(Uri.parse(mStepList.get(mCurrentStepId).getVideoURL()));

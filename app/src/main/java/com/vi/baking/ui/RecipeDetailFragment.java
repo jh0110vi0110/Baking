@@ -26,12 +26,9 @@ public class RecipeDetailFragment extends Fragment {
     public static final String TAG = "RecipeDetailFragment";
     Recipe mRecipe;
 
-    //public interface
-
     public RecipeDetailFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,20 +55,12 @@ public class RecipeDetailFragment extends Fragment {
             ArrayList<Ingredient> ingredients = mRecipe.getIngredients();
             if (ingredients != null) {
                 for (int i = 0; i < ingredients.size(); i++) {
-                    //mIngredientsTextView.append("-" + ingredients.get(i).getQuantity() + " " +
-                    //        ingredients.get(i).getMeasure() + " of " +
-                    //        ingredients.get(i).getIngredient() + "\n");
                     mIngredientsTextView.append("- " + ingredients.get(i).getIngredient() + "\n" +
                             "\t\t" + ingredients.get(i).getQuantity() + " " + ingredients.get(i).getMeasure() + "\n");
-                    //mIngredientsTextView.append("\t\t" + getString(R.string.quantity)+": " + ingredients.get(i).getQuantity() + " " +
-                    //        ingredients.get(i).getMeasure() + "\n\n");
-                    //mIngredientsTextView.append("\t\t Measure: " + ingredients.get(i).getMeasure() + "\n");
                 }
             }
             StepListAdapter stepListAdapter = new StepListAdapter(stepList, (DetailActivity)getActivity() );
             mStepsRecyclerView.setAdapter(stepListAdapter);
-            //stepListAdapter.setStepList(stepList);
-
         }
 
         // Inflate the layout for this fragment
