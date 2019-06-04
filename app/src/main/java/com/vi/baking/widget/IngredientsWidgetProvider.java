@@ -17,7 +17,6 @@ import com.vi.baking.ui.MainActivity;
  */
 public class IngredientsWidgetProvider extends AppWidgetProvider {
     //private static final String TAG = "IngredientsWidgProv";
-    //public static final String PREFERENCES_RECIPE_ID = "RECIPE_ID";
     public static final String PREFERENCES_WIDGET_RECIPE = "WIDGET_RECIPE";
     public static final String PREFERENCES_WIDGET_INGREDIENTS = "WIDGET_INGREDIENTS";
 
@@ -32,6 +31,7 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.tv_ingredients_widget_ingredients,
                 sharedPreferences.getString(PREFERENCES_WIDGET_INGREDIENTS, ""));
 
+        //Open App when widget is clicked
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -42,6 +42,8 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
     }
+
+    //Trigger updates from other classes
     public static void updateIngredientsWidgets (Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds){
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);

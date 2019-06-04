@@ -12,6 +12,7 @@ import com.vi.baking.espresso.SimpleIdlingResource;
 
 public class MainActivity extends AppCompatActivity {
 
+    //from Espresso Lesson
     @Nullable
     private SimpleIdlingResource mIdlingResource;
 

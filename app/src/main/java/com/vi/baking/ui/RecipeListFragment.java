@@ -33,21 +33,6 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
     public static final String TAG = "RecipeListFragment";
     private ArrayList<Recipe> mRecipeList;
 
-    @Nullable
-    private SimpleIdlingResource mIdlingResource;
-
-    /**
-     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
-     */
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlingResource();
-        }
-        return mIdlingResource;
-    }
-
     public RecipeListFragment() {
         // Required empty public constructor
     }
@@ -56,23 +41,25 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
-       //Initialize Recyclerview
+       //Initialize RecyclerView
         RecyclerView recipeListRecyclerView = (RecyclerView)  rootView.findViewById(R.id.rv_recipe_list);
         recipeListRecyclerView.setLayoutManager(new AutoFitGridLayoutManager(getContext(), 300));
         final RecipeListAdapter recipeListAdapter =new RecipeListAdapter(mRecipeList, this);
         recipeListRecyclerView.setAdapter(recipeListAdapter);
 
+        //idling resource for testing
         final SimpleIdlingResource idlingResource = (SimpleIdlingResource)((MainActivity)getActivity()).getIdlingResource();
 
         if (idlingResource != null) {
             idlingResource.setIdleState(false);
         }
 
-        //Asynchronous call (onResponse onFail)
+        //Retrofit library Asynchronous call (onResponse onFail)
         RecipeFetch recipeFetch = RecipeRetrofit.make();
         Call<ArrayList<Recipe>> recipeCall = recipeFetch.fetchRecipes();
         recipeCall.enqueue(new Callback<ArrayList<Recipe>>() {
 
+            //Background network request was successful
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
                 ArrayList<Recipe> recipes = response.body();
@@ -83,6 +70,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
                 }
             }
 
+            //Network request failed
             @Override
             public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
                 Log.d(TAG, "Retrofit onFailure http failure: " + t.getMessage());

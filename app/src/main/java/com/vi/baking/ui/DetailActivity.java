@@ -21,8 +21,10 @@ import com.vi.baking.widget.IngredientsWidgetProvider;
 import java.util.ArrayList;
 
 
-public class DetailActivity extends AppCompatActivity implements StepListAdapter.OnStepListener, StepDetailFragment.OnStepListener {
-    private static final String TAG = "DetailActivity";
+public class DetailActivity extends AppCompatActivity implements
+        StepListAdapter.OnStepListener,
+        StepDetailFragment.OnStepListener {
+    //private static final String TAG = "DetailActivity";
     public static final String PREFERENCES_RECIPE_ID = "RECIPE_ID";
     public static final String PREFERENCES_WIDGET_RECIPE = "WIDGET_RECIPE";
     public static final String PREFERENCES_WIDGET_INGREDIENTS = "WIDGET_INGREDIENTS";
@@ -76,12 +78,14 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
        displayStepAtPosition(position);
     }
 
+    //Send to Widget Option Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    //Send to Widget Functionality
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemClicked = item.getItemId();
@@ -133,6 +137,7 @@ public class DetailActivity extends AppCompatActivity implements StepListAdapter
 
     }
 
+    //For widget
     private String ingredientsToString(){
         StringBuilder outString = new StringBuilder();
         String servings = String.valueOf(mRecipeList.get(mRecipeIndex).getServings());

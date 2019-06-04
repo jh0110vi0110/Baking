@@ -147,6 +147,7 @@ public class StepDetailFragment extends Fragment {
             }
         });
 
+        //Set text for header and for full description
         shortDescriptionTextView.setText(mStepList.get(mCurrentStepId).getShortDescription());
         descriptionTextView.setText(mStepList.get(mCurrentStepId).getDescription());
 
