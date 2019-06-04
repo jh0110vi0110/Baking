@@ -2,6 +2,10 @@ package com.vi.baking.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +17,7 @@ import com.vi.baking.R;
 import com.vi.baking.adapter.RecipeListAdapter;
 import com.vi.baking.data.RecipeFetch;
 import com.vi.baking.data.RecipeRetrofit;
+import com.vi.baking.espresso.SimpleIdlingResource;
 import com.vi.baking.model.Recipe;
 
 import java.util.ArrayList;
@@ -28,6 +33,21 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
     public static final String TAG = "RecipeListFragment";
     private ArrayList<Recipe> mRecipeList;
 
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    /**
+     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
     public RecipeListFragment() {
         // Required empty public constructor
     }
@@ -42,6 +62,12 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
         final RecipeListAdapter recipeListAdapter =new RecipeListAdapter(mRecipeList, this);
         recipeListRecyclerView.setAdapter(recipeListAdapter);
 
+        final SimpleIdlingResource idlingResource = (SimpleIdlingResource)((MainActivity)getActivity()).getIdlingResource();
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         //Asynchronous call (onResponse onFail)
         RecipeFetch recipeFetch = RecipeRetrofit.make();
         Call<ArrayList<Recipe>> recipeCall = recipeFetch.fetchRecipes();
@@ -52,6 +78,9 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
                 ArrayList<Recipe> recipes = response.body();
                 mRecipeList = recipes;
                 recipeListAdapter.setRecipeList(recipes);
+                if (idlingResource != null) {
+                    idlingResource.setIdleState(true);
+                }
             }
 
             @Override
