@@ -18,7 +18,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/ingredients_widget_provider_info" />
+                android:resource="@xml/ingredients_widget_info" />
         </receiver>
 
         <activity android:name=".ui.DetailActivity" />
@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

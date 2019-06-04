@@ -64,6 +64,10 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.On
 
     @Override
     public void onRecipeClick(int position) {
+        displayRecipeDetailActivityForPosition(position);
+    }
+
+    public void displayRecipeDetailActivityForPosition(int position) {
         ArrayList<Recipe> recipeListToSend = mRecipeList;
         Intent intentToStartDetailActivity = new Intent(getContext(), DetailActivity.class);
         Bundle b = new Bundle();
