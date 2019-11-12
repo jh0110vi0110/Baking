@@ -1,7 +1,7 @@
 # Baking Time
-Udacity Project
+Udacity Android Developer Nanodegree Project
 
-Retrieves recipe info from the network as JSON and displays text and video steps.
+Retrieves recipe information from the network as JSON and displays text and video steps.  Features support for different layout sizes.
 
 ## UI
 ### Recipe View
